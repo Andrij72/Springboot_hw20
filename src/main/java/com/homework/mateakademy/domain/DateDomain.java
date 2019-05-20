@@ -1,0 +1,20 @@
+package com.homework.mateakademy.domain;
+
+
+import com.homework.mateakademy.listener.UserDataListener;
+import com.homework.mateakademy.listener.DateListenerDate;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+
+
+@Data
+@MappedSuperclass
+@EqualsAndHashCode(callSuper = false)
+@EntityListeners(value = DateListenerDate.class)
+public class DateDomain extends Entity {
+    private Long date;
+}
