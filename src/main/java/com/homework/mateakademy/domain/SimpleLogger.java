@@ -9,7 +9,7 @@ public class SimpleLogger
 {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     @AroundInvoke
-    public Object addLog(InvocationContext context){
+    public Object addLog(InvocationContext context) throws Exception {
         LOGGER.info("-----Interceptor  called");
         return context.proceed();
     }

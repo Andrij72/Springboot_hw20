@@ -3,7 +3,8 @@ package com.homework.mateakademy.controller;
 
 import com.homework.mateakademy.domain.Message;
 import com.homework.mateakademy.domain.User;
-import com.homework.mateakademy.repositories.MessageRepository;
+import com.homework.mateakademy.service.MessageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MainController {
 
-    private MessageRepository messageRepo;
-
-    @Autowired
-    public DI(MessageRepository messageRepo) {
-        this.messageRepo = messageRepo;
-    }
+    private MessageService messageService;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -30,7 +27,7 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Message> messages = messageService.loadByTag();
 
         model.put("messages", messages);
 
@@ -45,9 +42,9 @@ public class MainController {
     ) {
         Message message = new Message(text, tag, user);
 
-        messageRepo.save(message);
+        messageRepository.save(message);
 
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Message> messages = messageRepository.findAll();
 
         model.put("messages", messages);
 
@@ -59,9 +56,9 @@ public class MainController {
         Iterable<Message> messages;
 
         if (filter != null && !filter.isEmpty()) {
-            messages = messageRepo.findByTag(filter);
+            messages = messageRepository.findByTag(filter);
         } else {
-            messages = messageRepo.findAll();
+            messages = messageRepository.findAll();
         }
 
         model.put("messages", messages);
